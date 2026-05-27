@@ -10,7 +10,7 @@ uv sync
 ```
 
 ## Todo
-- []
+- [x] Implement pretrained model
 - []
 - []
 
