@@ -9,8 +9,15 @@ To sync up the depenedencies, ensure the pyproject.toml is pulled and run
 uv sync
 ```
 
+## DataSet
+Clean speach from [LibriSpeech](https://www.openslr.org/resources/12) 
+[data](https://www.openslr.org/resources/12/dev-clean.tar.gz)
+
+Noise data from [ESC-50] dataset
+[data](https://github.com/karoldvl/ESC-50/archive)
+
 ## Todo
-- [x] Implement pretrained model
+- [x] Create mixing script for clean and noisy datasets
 - []
 - []
 
