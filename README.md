@@ -14,7 +14,15 @@ Clean speach from [LibriSpeech](https://www.openslr.org/resources/12)
 [data](https://www.openslr.org/resources/12/dev-clean.tar.gz)
 
 Noise data from [ESC-50] dataset
-[data](https://github.com/karoldvl/ESC-50/archive)
+[data](https://github.com/karoldvl/ESC-50/archive/master.zip)
+
+Get dataset with the following commands
+```bash
+mkdir -p data
+cd data
+wget https://www.openslr.org/resources/12/dev-clean.tar.gz && wget https://github.com/karoldvl/ESC-50/archive/master.zip
+```
+
 
 ## Todo
 - [x] Create mixing script for clean and noisy datasets
