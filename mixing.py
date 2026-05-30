@@ -11,7 +11,7 @@ CLIP_DURATION = 3.0
 N_CLIP_SAMPLES = int(SAMPLE_RATE * CLIP_DURATION)
 SNR_RANGE = (-5, 15) # dB
 N_TRAIN = 2000
-N_VAL = 200
+N_VALIDATION = 200
 
 CLEAN_DIR = Path("data/LibriSpeech/dev-clean")
 NOISE_DIR = Path("data/ESC-50-master/audio")
@@ -24,15 +24,38 @@ def load_and_sample(path: Path, target_sr = SAMPLE_RATE):
         audio = audio.mean(axis=1) # for mono audio
     
     if sr != target_sr:
-        audio = librosa.resample(audio.astype(np.float32), 
-                                 orig_sr = sr,
-                                  target_sr = target_sr)
+        audio = librosa.resample(
+            audio.astype(np.float32), 
+            orig_sr = sr,
+            target_sr = target_sr
+        )
     
     return audio.astype(np.float32)
 
+# TODO Needs testing. Got from Claude so double check.
+def mix(clean, noise, snr_db):
+    clean_power = np.mean(clean ** 2) + 1e-10
+    noise_power = np.mean(noise ** 2) + 1e-10
+    
+    scale = np.sqrt(clean_power / (noise_power * 10 ** (snr_db / 10)))
+
+    noisy = clean + noise * scale
+
+    # Dont want to have clipping in the audio
+    peak = np.max(np.abs(noisy))
+
+    if peak > 0.99:
+        noisy = noisy / peak * 0.99
+        clean = clean / peak * 0.99
+    
+    return noisy.astype(np.float32), clean.astype(np.float32)
+
 def main():
-    load_and_sample(CLEAN_DIR)
-    load_and_sample(NOISE_DIR)
+    clean_files = list(CLEAN_DIR.rglob("*.flac"))
+    noise_files = list(NOISE_DIR.rglob("*.wav"))
+
+    print(f"Got {len(clean_files)} clean files and {len(noise_files)} noise files")
+
 
 if __name__ == "__main__":
     main()
