@@ -26,8 +26,8 @@ wget https://www.openslr.org/resources/12/dev-clean.tar.gz && wget https://githu
 
 ## Todo
 - [x] Create mixing script for clean and noisy datasets
-- []
-- []
+- [x] Test mixing script
+- [] Need to test if mixed files are proper
 
 ## References
 
