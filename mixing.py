@@ -34,12 +34,20 @@ def load_and_sample(path: Path, target_sr = SAMPLE_RATE):
 
 # TODO Needs testing. Got from Claude so double check.
 def mix(clean, noise, snr_db):
+
+    n = min(len(clean), len(noise))
+    
+    # need both are same length
+    clean = clean[:n]
+    noise = noise[:n]
+
+
     clean_power = np.mean(clean ** 2) + 1e-10
     noise_power = np.mean(noise ** 2) + 1e-10
     
     scale = np.sqrt(clean_power / (noise_power * 10 ** (snr_db / 10)))
 
-    noisy = clean + noise * scale
+    noisy = clean + (noise * scale)
 
     # Dont want to have clipping in the audio
     peak = np.max(np.abs(noisy))
